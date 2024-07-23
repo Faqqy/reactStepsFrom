@@ -1,6 +1,6 @@
 // import { useCallback, useState } from "react";
 
-import React, { MouseEventHandler, useState } from "react";
+import React, { useState } from "react";
 
 interface formDataType {
   formData: string,
@@ -53,47 +53,37 @@ export default function Steps() {
     setHistory(history.filter((_, i) => i != index));
   }
 
-  const onClickEdit: MouseEventHandler<HTMLDivElement> = (el) => {
-    setForm(history.filter((step) => step.formData === el.currentTarget.id)[0]);
-  }
-  
-
   return(
       <>
-        <form onSubmit={handleSubmit}>
-          <label>
+        <form className="d-flex" onSubmit={handleSubmit}>
+          <label className="d-flex-column">
             Дата (ДД.ММ.ГГ)
             <input type="date" name="formData" value={form.formData} onInput={handleChange}/>
           </label>
-          <label>
+          <label className="d-flex-column">
             Пройдено км
             <input type="number" name="formPassed" value={form.formPassed} onInput={handleChange}/>
           </label>
-          <button type="submit">OK</button>
+          <button className="d-flex-column" type="submit">OK</button>
         </form>
         <div>
           <ul className="d-flex">
-            <li>
-              <span className="col">Дата (ДД.ММ.ГГ)</span>
-              <span className="col">Пройдено км</span> 
-              <span className="col">Действия</span>
-            </li>
+            <span className="col">Дата (ДД.ММ.ГГ)</span>
+            <span className="col">Пройдено км</span> 
+            <span className="col">Действия</span>
           </ul>
-          {history.map((el, i) => (
-            <li>
-              <div className="d-flex" key={i}>
-                <div>
-                  {el.formData.split('-').reverse().join('.')}
-                </div>
-                <div>
-                  {el.formPassed}
-                </div>
-                <div>
-                  <button onClick={() => onClickEdit}>EDIT</button>
-                  <button onClick={() => onClickRemove(i)}>X</button>
-                </div>
-              </div>
-            </li>
+          {history.map((el, i) => ( 
+            <ul className="d-flex"> 
+              <span className="col">
+                {el.formData.split('-').reverse().join('.')}
+              </span>
+              <span className="col">
+                {el.formPassed}
+              </span>
+              <span className="col">
+                <button onClick={() => onClickRemove(i)}>X</button>
+              </span>
+            </ul>
           ))}
         </div>
       </>
