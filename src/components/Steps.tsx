@@ -16,9 +16,11 @@ export default function Steps() {
 
   const [history, setHistory] = useState<formDataType[]>([]);
 
+  const maxDate = new Date().toISOString().split('T')[0];
+
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    setHistory([...history, form]);
+
     if (form.formData && form.formPassed) {
       if (history.findIndex((el) => el.formData === form.formData) > -1) {
         const arr = history.map((el) => {
@@ -53,39 +55,49 @@ export default function Steps() {
     setHistory(history.filter((_, i) => i != index));
   }
 
-  return(
-      <>
-        <form className="d-flex" onSubmit={handleSubmit}>
-          <label className="d-flex-column">
-            Дата (ДД.ММ.ГГ)
-            <input type="date" name="formData" value={form.formData} onInput={handleChange}/>
-          </label>
-          <label className="d-flex-column">
-            Пройдено км
-            <input type="number" name="formPassed" value={form.formPassed} onInput={handleChange}/>
-          </label>
-          <button className="d-flex-column" type="submit">OK</button>
+  return( 
+      <div className="container">
+        <form className="wrap" onSubmit={handleSubmit}>
+          <div className="col">
+            <label>
+              Дата (ДД.ММ.ГГ)
+            </label>
+            <input type="date" max={maxDate} name="formData" value={form.formData} onInput={handleChange}/>
+          </div>
+          <div className="col">
+            <label >
+              Пройдено км
+            </label>
+            <input type="number" name="formPassed" value={form.formPassed} onInput={handleChange}/> 
+          </div>
+          <div className="col">
+            <button type="submit">OK</button> 
+          </div>
         </form>
-        <div>
-          <ul className="d-flex">
-            <span className="col">Дата (ДД.ММ.ГГ)</span>
-            <span className="col">Пройдено км</span> 
-            <span className="col">Действия</span>
-          </ul>
-          {history.map((el, i) => ( 
-            <ul className="d-flex"> 
-              <span className="col">
-                {el.formData.split('-').reverse().join('.')}
-              </span>
-              <span className="col">
-                {el.formPassed}
-              </span>
-              <span className="col">
-                <button onClick={() => onClickRemove(i)}>X</button>
-              </span>
-            </ul>
-          ))}
+        <div className="wrap">
+            <div className="col">
+              <span>Дата (ДД.ММ.ГГ)</span>
+            </div>
+            <div className="col">
+              <span>Пройдено км</span>
+            </div> 
+            <div className="col">
+              <span>Действия</span>
+            </div>
         </div>
-      </>
+          {history.map((el, i) => ( 
+            <div key={i} className="wrap">
+              <div className="col">
+                {el.formData.split('-').reverse().join('.')}
+              </div>
+              <div className="col">
+                {el.formPassed}
+              </div>
+              <div className="col">
+                <button onClick={() => onClickRemove(i)}>X</button>
+              </div>
+            </div>
+          ))}
+      </div>
   )
 }
